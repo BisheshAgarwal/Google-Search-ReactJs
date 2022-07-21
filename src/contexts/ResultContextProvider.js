@@ -7,7 +7,7 @@ const baseUrl = "https://google-search3.p.rapidapi.com/api/v1";
 export const ResultContextProvider = (props) => {
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("Elon Musk");
 
   // /videos, /search, /images
   const getResults = async (type) => {
@@ -18,13 +18,20 @@ export const ResultContextProvider = (props) => {
       headers: {
         "X-User-Agent": "desktop",
         "X-Proxy-Location": "EU",
-        "X-RapidAPI-Key": "8301e3d394msh5f3968312e9fdbfp103ab9jsn9d03cd340360",
+        "X-RapidAPI-Key": "d56df0abbamsh3c0e33fe21479fap119418jsn6b95c98d9bf6",
         "X-RapidAPI-Host": "google-search3.p.rapidapi.com",
       },
     });
 
     const data = await response.json();
-    setResults(data);
+    if (type.includes("/news")) {
+      setResults(data.entries);
+    } else if (type.includes("/image")) {
+      setResults(data.image_results);
+    } else {
+      setResults(data.results);
+    }
+
     setIsLoading(false);
   };
 
